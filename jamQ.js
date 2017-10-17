@@ -19,7 +19,7 @@ bindEvent: function(event, callback, targetElement) {
     target: targetElement
   }); // Push the new event into our events array.
 },
-
+ 
   findEvent: function(event) {
     return this.events.filter(function(evt) {
       return (evt.type === event); // If event type is a match return
@@ -68,3 +68,26 @@ domElement.prototype.html = function(html) {
   }
   this.element.innerHTML = html;
 };
+
+domElement.prototype.init = function() {
+  switch(this.selector[0]) {
+      case '<':
+      //create element
+      let matches = this.selector.match(/<([\w-]*)>/)
+      if (matches === null || matches === undefined){
+        throw 'Invalid Selector / Node';
+        return false;
+      }
+      let nodeName = matches[0].replace('<', '').replace('>', '');
+      this.element = document.createElement(nodeName);
+      break;
+
+      default: this.element = document.querySelector(this.selector)
+  }
+};
+
+$ = function(selector) {
+  let element = new domElement(selector); // new domElement
+  element.init(); // initialize the domElement
+  return element; // return domElement
+}
