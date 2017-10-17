@@ -24,7 +24,7 @@ bindEvent: function(event, callback, targetElement) {
     return this.events.filter(function(evt) {
       return (evt.type === event); // If event type is a match return
     }, event) [0];
-  }
+  },
 
   unbindEvent: function(event, targetElement) {
     // Search events
@@ -42,5 +42,29 @@ bindEvent: function(event, callback, targetElement) {
   }
 };
 
+domElement.prototype.on = function(event, callback) {
+  this.eventHandler.bindEvent(event, callback, this.element);
+}
+domElement.prototype.off = function (event, callback) {
+  this.eventHandler.unbindEvent(event, this.element);  
+}
 
+domElement.prototype.val = function (newVal) {
+  return (newVal !== undefined ? this.element.value = newVal :
+  this.element.value);  
+}
 
+domElement.prototype.append = function(html) {
+  this.element.innerHTML = this.element.innerHTML + html;
+}
+
+domElement.prototype.prepend = function(html) {
+  this.element.innerHTML = html + this.element.innerHTML;
+}
+
+domElement.prototype.html = function(html) {
+  if(html === undefined) {
+    return this.element.innerHTML;
+  }
+  this.element.innerHTML = html;
+};
